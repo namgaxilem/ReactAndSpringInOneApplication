@@ -11,11 +11,11 @@ spring:
         credential:
           client-id: dc8f3d14-355c-4223-80cb-23e938c26027
           client-secret: r1~8Q~337Lpk.Zl5HyebzmTTYIgU1Mja18XOUdcu
-        app-id-uri: <Web-API-C-app-id-url>
+        app-id-uri: api://dc8f3d14-355c-4223-80cb-23e938c26027
         application-type: web_application_and_resource_server  # This is required.
         authorization-clients:
           graph:
             authorizationGrantType: authorization_code  # This is required.
             scopes:
               - https://graph.microsoft.com/User.Read
-              - https://graph.microsoft.com/Directory.Read.All
+        post-logout-redirect-uri: 'http://localhost:8080/'

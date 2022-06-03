@@ -4,7 +4,14 @@ import Initializer from "pages/Initializer/Initializer";
 import Login from "pages/Login/Login";
 import RouteWithSidenav from "pages/RouteWithSidenav/RouteWithSidenav";
 import React, { useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import "./App.less";
 
 const NotFoundRedirect = () => <Navigate to="/" />;
@@ -23,25 +30,31 @@ const privateRoutes: CustomRoute[] = [
 ];
 
 const publicRoutes: CustomRoute[] = [
-  { path: "/*", exact: true, element: <Navigate to={{ pathname: '/login', }} state={{ prev: window.location.pathname }} /> },
+  {
+    path: "/*",
+    exact: true,
+    element: (
+      <Navigate
+        to={{ pathname: "/login" }}
+        state={{ prev: window.location.pathname }}
+      />
+    ),
+  },
   { path: "/login", exact: true, element: <Login /> },
 ];
 
 const App = () => {
-  const { isStoredToken, acquireAccessToken, restore } = useAuth();
-
-  useEffect(() => {
-    restore()
-    acquireAccessToken()
-  }, [])
+  const { user } = useAuth();
 
   return (
     <BrowserRouter>
       <Routes>
         {[
-          ...(isStoredToken() ? privateRoutes : publicRoutes),
-          { component: NotFoundRedirect }
-        ].map((route, index) => <Route key={index} {...route} />)}
+          ...(user ? privateRoutes : publicRoutes),
+          { component: NotFoundRedirect },
+        ].map((route, index) => (
+          <Route key={index} {...route} />
+        ))}
       </Routes>
     </BrowserRouter>
   );

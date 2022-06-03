@@ -42,17 +42,17 @@ class RestClient {
     let cfg = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': ``
+        // 'Authorization': ``
       },
       withCredentials: true
     }
 
-    const user = localStorage.getItem(config.localStorage.userKey)
+    // const user = localStorage.getItem(config.localStorage.userKey)
 
-    if (user) {
-      const userObj: User = JSON.parse(user)
-      cfg.headers.Authorization = `Bearer ${userObj.accessToken}` || ''
-    }
+    // if (user) {
+    //   const userObj: User = JSON.parse(user)
+    //   cfg.headers.Authorization = `Bearer ${userObj.accessToken}` || ''
+    // }
 
     return { ...cfg, ...c }
   }

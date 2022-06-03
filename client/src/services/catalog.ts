@@ -2,7 +2,6 @@ import Flow from 'types/Flow'
 import { clientCatalog as client } from 'utils/api'
 
 const FLOW_ENDPOINT = '/flows'
-const FLOW_VERSION_ENDPOINT = '/flow-versions'
 
 async function getFlows(page: number, pageSize: number): Promise<Flow[] | any> {
   try {

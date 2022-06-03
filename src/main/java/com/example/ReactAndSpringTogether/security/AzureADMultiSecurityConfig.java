@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
@@ -20,7 +21,8 @@ public class AzureADMultiSecurityConfig {
             super.configure(http);
             // All the paths that match `/api/**`(configurable) work as the resource server. Other paths work as  the web application.
             http.antMatcher("/api/**")
-                    .authorizeRequests().anyRequest().authenticated();
+                    .authorizeRequests()
+                    .anyRequest().authenticated();
         }
     }
 
@@ -30,11 +32,18 @@ public class AzureADMultiSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            // @formatter:off
-            http.authorizeRequests()
-                    .antMatchers("/login").permitAll()
+
+            http.authorizeRequests().antMatchers("/**").permitAll()
                     .anyRequest().authenticated();
-            // @formatter:on
+            http
+                    .csrf()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            http
+                    .oauth2Login().defaultSuccessUrl("/").and()
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/");
+
         }
     }
 }

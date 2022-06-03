@@ -1,7 +1,8 @@
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Upload } from "antd";
+import { Button, Form, Input, Typography, Upload } from "antd";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { getUserInfo } from "services/userInfo";
 import { changeTitle } from "../../store/title/titleSlice";
 import "./Dashboard.less";
 
@@ -46,7 +47,7 @@ function Dashboard() {
   };
 
   const onUpload = (file, fieldName) => {
-    console.log("onUpload")
+    console.log("onUpload");
     const reader = new FileReader();
     reader.addEventListener("load", (event) => {
       const result: string = event?.target?.result as string;
@@ -112,6 +113,19 @@ function Dashboard() {
       </Form>
 
       <button onClick={getFormValues}>getFormValues</button>
+
+      <Button
+        type="dashed"
+        block
+        onClick={async () => {
+          const a = await getUserInfo();
+          console.log("user-info", a);
+        }}
+      >
+        <Typography.Text style={{ width: "100%" }}>
+          Test Call user api
+        </Typography.Text>
+      </Button>
     </>
   );
 }

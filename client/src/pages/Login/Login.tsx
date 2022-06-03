@@ -11,13 +11,13 @@ import {
   Typography,
 } from "antd";
 import MS_LOGO from "assets/ms_logo.png";
+import { LOGIN_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
 import styles from "./Login.module.less";
 
 const { Text } = Typography;
 
 const Login = () => {
-  const { login } = useAuth();
   const [form] = Form.useForm();
 
   const onFinish = () => {
@@ -26,16 +26,6 @@ const Login = () => {
       description: "Currently only support AAD authentication",
     };
     notification.open(args);
-  };
-
-  const onAADLoginClick = async () => {
-    try {
-      const res = await login();
-      console.log("Ok", res);
-      window.location.reload()
-    } catch (err) {
-      console.log("Not ok", err);
-    }
   };
 
   return (
@@ -111,11 +101,21 @@ const Login = () => {
           type="dashed"
           block
           className={styles.OptionalLoginButton}
-          onClick={onAADLoginClick}
+          // onClick={onAADLoginClick}
+          onClick={() => window.location.href = LOGIN_ENDPOINT}
         >
           <img src={MS_LOGO} alt="MS Logo" className={styles.ms_logo} />
           <Text style={{ width: "100%" }}>Login with AAD</Text>
         </Button>
+
+        <a
+          // type="dashed"
+          // block
+          // className={styles.OptionalLoginButton}
+          href={LOGIN_ENDPOINT}
+        >
+          <Text style={{ width: "100%" }}>Login</Text>
+        </a>
       </Card>
     </Layout>
   );

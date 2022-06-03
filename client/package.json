@@ -28,7 +28,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "postbuild": "mv build '../src/main/resources/static'",
+    "postbuild": "rm -rf '../src/main/resources/static' && mv build '../src/main/resources/static'",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

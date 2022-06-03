@@ -1,19 +1,12 @@
 import {
-  DesktopOutlined, HomeOutlined, PieChartOutlined,
+  DesktopOutlined, PieChartOutlined,
   TeamOutlined
 } from "@ant-design/icons";
-import {
-  Avatar, Dropdown,
-  Layout,
-  Menu,
-  Space,
-  Typography
-} from "antd";
-import { config } from "config/config";
+import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
+import { LOGOUT_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
-import Rooms from "pages/Rooms/Rooms";
-import { useState } from "react";
-import { Navigate, NavLink, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Catalog from "../Catalog/Catalog";
 import Dashboard from "../Dashboard/Dashboard";
 import Environments from "../Environments/Environments";
@@ -23,13 +16,21 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const RouteWithSidenav = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMenuClick = (e) => {
     if (e.key === "1") {
-      logout();
+      window.location.href = LOGOUT_ENDPOINT;
     }
   };
+
+  useEffect(() => {
+    if (location.pathname === "/login") {
+      navigate("/dashboard")
+    }
+  }, [location])
 
   const menu = (
     <Menu onClick={handleMenuClick}>
@@ -49,7 +50,7 @@ const RouteWithSidenav = () => {
       >
         <div className={styles.logo} />
 
-        <Menu theme="dark" defaultSelectedKeys={["4"]} mode="inline">
+        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1" icon={<PieChartOutlined />}>
             <NavLink to="/dashboard">
               <div>Dashboard</div>
@@ -65,24 +66,10 @@ const RouteWithSidenav = () => {
               <div>Environments</div>
             </NavLink>
           </Menu.Item>
-          <Menu.Item key="4" icon={<HomeOutlined />}>
-            <NavLink to="/rooms">
-              <div>Rooms</div>
-            </NavLink>
-          </Menu.Item>
         </Menu>
-
       </Sider>
       <Layout className="site-layout">
         <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
-        <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
-            <Space className={styles.avatar}>
-              <Typography.Text>{config.catalogURL}</Typography.Text>
-              <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
-                {"ENV"}
-              </Avatar>
-            </Space>
-          </Dropdown>
           <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
             <Space className={styles.avatar}>
               <Typography.Text>{user && user.name}</Typography.Text>
@@ -101,8 +88,7 @@ const RouteWithSidenav = () => {
               <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route path="/catalog" element={<Catalog />}></Route>
               <Route path="/environments" element={<Environments />}></Route>
-              <Route path="/rooms" element={<Rooms />}></Route>
-              <Route path="/*" element={<Navigate to="/rooms" />}></Route>
+              <Route path="/*" element={<Dashboard />}></Route>
             </Routes>
           </div>
         </Content>
