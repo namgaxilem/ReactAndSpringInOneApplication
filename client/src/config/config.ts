@@ -14,7 +14,8 @@ declare global {
 // }
 
 const config = {
-  catalogURL: 'http://localhost:8080/'
+  baseURL: 'http://localhost:8080/api',
+  // deploymentURL: 'http://localhost:8181/'
 }
 
 

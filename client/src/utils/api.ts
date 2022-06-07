@@ -73,9 +73,8 @@ class RestClient {
   }
 }
 
-const clientCatalog = new RestClient(config.catalogURL)
+const client = new RestClient(config.baseURL)
 
 export {
-  clientCatalog
+  client
 }
-

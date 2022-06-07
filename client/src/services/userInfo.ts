@@ -1,7 +1,7 @@
 import Flow from 'types/Flow'
-import { clientCatalog as client } from 'utils/api'
+import { client } from 'utils/api'
 
-const USER_INFO = '/api/user-info'
+const USER_INFO = '/user-info'
 
 async function getUserInfo(): Promise<Flow[] | any> {
   try {

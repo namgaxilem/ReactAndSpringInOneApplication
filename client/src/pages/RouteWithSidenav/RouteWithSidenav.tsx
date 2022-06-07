@@ -5,6 +5,7 @@ import {
 import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
 import { LOGOUT_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
+import Deployment from "pages/Deployment/Deployment";
 import { useEffect, useState } from "react";
 import { NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Catalog from "../Catalog/Catalog";
@@ -66,6 +67,11 @@ const RouteWithSidenav = () => {
               <div>Environments</div>
             </NavLink>
           </Menu.Item>
+          <Menu.Item key="4" icon={<TeamOutlined />}>
+            <NavLink to="/deployments">
+              <div>Deployments</div>
+            </NavLink>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -88,6 +94,7 @@ const RouteWithSidenav = () => {
               <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route path="/catalog" element={<Catalog />}></Route>
               <Route path="/environments" element={<Environments />}></Route>
+              <Route path="/deployments" element={<Deployment />}></Route>
               <Route path="/*" element={<Dashboard />}></Route>
             </Routes>
           </div>
