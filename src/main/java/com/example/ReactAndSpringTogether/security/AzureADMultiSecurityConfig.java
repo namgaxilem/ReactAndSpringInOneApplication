@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.servlet.Filter;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AzureADMultiSecurityConfig {
@@ -23,6 +25,9 @@ public class AzureADMultiSecurityConfig {
             http.antMatcher("/api/**")
                     .authorizeRequests()
                     .anyRequest().authenticated();
+            http
+                    .csrf()
+                    .disable();
         }
     }
 
@@ -44,6 +49,11 @@ public class AzureADMultiSecurityConfig {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/");
 
+        }
+
+        @Override
+        protected Filter conditionalAccessFilter() {
+            return new AadConditionalAccessFilter();
         }
     }
 }

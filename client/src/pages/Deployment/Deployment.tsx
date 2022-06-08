@@ -1,4 +1,4 @@
-import { Button, Input } from "antd";
+import { Button, Input, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { postDeployment } from "services/deployment";
 
@@ -15,11 +15,11 @@ const Deployment = () => {
   };
 
   return (
-    <>
+    <Space direction={"vertical"}>
       <input value={username} onChange={(e) => setUserName(e.target.value)} />
       <input value={password} onChange={(e) => setPassword(e.target.value)} />
       <Button onClick={onPostDeploymentClick}>Post Deployment</Button>
-    </>
+    </Space>
   );
 };
 

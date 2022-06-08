@@ -2,6 +2,7 @@ import Flow from 'types/Flow'
 import { client } from 'utils/api'
 
 const DEPLOYMENT_ENDPOINT = '/deployment'
+const NIFI_AGENT_ENDPOINT = '/nifi-agent'
 
 async function postDeployment(body: any): Promise<Flow[] | any> {
   try {
@@ -12,7 +13,17 @@ async function postDeployment(body: any): Promise<Flow[] | any> {
   }
 }
 
+async function callNifiAgent(): Promise<Flow[] | any> {
+  try {
+    const data = await client.get(NIFI_AGENT_ENDPOINT)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export {
-    postDeployment
+    postDeployment,
+    callNifiAgent
 }
 
