@@ -3,6 +3,7 @@ package com.example.ReactAndSpringTogether.api.security;
 import com.nimbusds.jose.util.JSONStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -17,7 +18,6 @@ import java.security.Principal;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @RestController
-@RequestMapping("/api")
 public class DeploymentController {
 
     @Autowired
@@ -26,11 +26,14 @@ public class DeploymentController {
     @Autowired
     private OAuth2AuthorizedClientManager auth2AuthorizedClientManager;
 
-    @PostMapping("/deployment")
+    @PostMapping("/api/deployment")
     public ResponseEntity<String> createDeployment(
             @RegisteredOAuth2AuthorizedClient("dhp-eventproc-deployment") OAuth2AuthorizedClient deploymentService,
-            @RequestBody Object body
+            @RequestBody Object body,
+            Principal principal
             ) {
+        System.out.println(principal);
+//        return new ResponseEntity<>("ok" + body, HttpStatus.OK);
         return new ResponseEntity<>(callDeploymentService(deploymentService, body), HttpStatus.OK);
     }
 
@@ -39,14 +42,16 @@ public class DeploymentController {
             String body = this.webClient
                     .post()
                     .uri("http://localhost:8282/v1/deployment")
+                    .accept(MediaType.ALL)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(JSONStringUtils.toJSONString(reqBody.toString())))
                     .attributes(oauth2AuthorizedClient(deploymentService))
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
-            return "deploymentService response " + (null != body ? "success." : "failed.") + body;
+            return "/api/deployment - " + (null != body ? body : "null");
         } else {
-            return "deploymentService response failed.";
+            return "/api/deployment - failed.";
         }
     }
 }

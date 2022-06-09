@@ -16,23 +16,32 @@ spring:
           client-id: dc8f3d14-355c-4223-80cb-23e938c26027
           client-secret: r1~8Q~337Lpk.Zl5HyebzmTTYIgU1Mja18XOUdcu
         app-id-uri: api://dc8f3d14-355c-4223-80cb-23e938c26027
-        application-type: web_application_and_resource_server  # This is required.
+        application-type: web_application # web_application_and_resource_server  # This is required.
         authorization-clients:
-          graph:
-            authorizationGrantType: authorization_code  # This is required.
+          dhp-eventproc-catalog:
             scopes:
-#              - https://graph.microsoft.com/.default
-              - https://graph.microsoft.com/User.Read
-              - https://graph.microsoft.com/Directory.Read.All
-          dhp-eventproc-catalog: # dhp-eventproc-catalog
-            authorization-grant-type: client_credentials # When authorization-grant-type is null, on behalf of flow is used by default
-            scopes:
-              - api://9911dd89-b9c5-4de4-b3bb-265d5c214e91/.default
+              - api://9911dd89-b9c5-4de4-b3bb-265d5c214e91/Obo.Catalog
           dhp-eventproc-deployment:
-            on-demand: true
-            authorization-grant-type: on_behalf_of # When authorization-grant-type is null, on_behalf_of flow is used by default
+#            authorization-grant-type: on_behalf_of # When authorization-grant-type is null, on_behalf_of flow is used by default
             scopes:
               - api://05b23345-b17a-4c50-99a1-959287ce863b/Obo.Deployment.NifiScope
+
+#azure:
+#  activedirectory:
+#    application-type: web_application_and_resource_server
+#    # Specifies your Active Directory ID:
+#    tenant-id: d400665f-0274-46fe-899b-38ed0885144a
+#    # Specifies your App Registration's Application ID:
+#    client-id: dc8f3d14-355c-4223-80cb-23e938c26027
+#    # Specifies your App Registration's secret key:
+#    client-secret: r1~8Q~337Lpk.Zl5HyebzmTTYIgU1Mja18XOUdcu
+#    # Specifies the post-log-out-redirect-uri, where to return your app after logout.
+#    post-logout-redirect-uri: http://localhost:8080
+#    # Specifies the Microsoft Graph scopes that your app needs access to - not required in this app.
+#    authorization-clients:
+#      dhp-eventproc-catalog:
+#        authorization-grant-type: ON_BEHALF_OF
+#        scopes: api://9911dd89-b9c5-4de4-b3bb-265d5c214e91/Obo.Catalog
 
 webclient:
   config:

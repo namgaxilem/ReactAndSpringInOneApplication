@@ -29,9 +29,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-active-directory:4.1.0'
+//	implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:3.9.0'
 }
 
 tasks.named('test') {

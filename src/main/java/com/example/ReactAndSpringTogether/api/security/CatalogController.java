@@ -3,6 +3,7 @@ package com.example.ReactAndSpringTogether.api.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -12,7 +13,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @RestController
-@RequestMapping("/api")
 public class CatalogController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class CatalogController {
     @Autowired
     private OAuth2AuthorizedClientManager auth2AuthorizedClientManager;
 
-    @GetMapping("/flows")
+    @GetMapping("/api/flows")
     public ResponseEntity<String> getFlows(
             @RegisteredOAuth2AuthorizedClient("dhp-eventproc-catalog") OAuth2AuthorizedClient catalogService) {
         return new ResponseEntity<>(callCatalogService(catalogService), HttpStatus.OK);
@@ -36,9 +36,9 @@ public class CatalogController {
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
-            return "catalogService response " + (null != body ? "success." : "failed.") + body;
+            return "/api/flows - " + (null != body ? body : "null");
         } else {
-            return "catalogService response failed.";
+            return "/api/flows - failed.";
         }
     }
 }
