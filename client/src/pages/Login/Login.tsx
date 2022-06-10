@@ -13,6 +13,7 @@ import {
 import MS_LOGO from "assets/ms_logo.png";
 import { LOGIN_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
+import { postDeployment } from "services/deployment";
 import styles from "./Login.module.less";
 
 const { Text } = Typography;
@@ -50,6 +51,8 @@ const Login = () => {
           <Text style={{ width: "100%" }}>Login with AAD</Text>
         </Button>
       </Card>
+
+      <button onClick={() => { postDeployment(null) }}> testtest</button>
     </Layout>
   );
 };

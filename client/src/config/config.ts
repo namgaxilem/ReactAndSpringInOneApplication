@@ -14,7 +14,7 @@ declare global {
 // }
 
 const config = {
-  baseURL: 'http://localhost:8080/api',
+  baseURL: '/api',
   // deploymentURL: 'http://localhost:8181/'
 }
 

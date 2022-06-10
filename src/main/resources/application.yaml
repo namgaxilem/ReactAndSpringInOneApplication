@@ -9,9 +9,6 @@ spring:
         post-logout-redirect-uri: 'http://localhost:8080/'
         profile:
           tenant-id: d400665f-0274-46fe-899b-38ed0885144a
-        user-group:
-          allowed-group-names: all
-          allowed-group-ids: all
         credential:
           client-id: dc8f3d14-355c-4223-80cb-23e938c26027
           client-secret: r1~8Q~337Lpk.Zl5HyebzmTTYIgU1Mja18XOUdcu
