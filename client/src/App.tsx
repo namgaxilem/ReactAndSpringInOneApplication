@@ -13,6 +13,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import "./App.less";
+import { useIdleTimer } from 'react-idle-timer'
 
 const NotFoundRedirect = () => <Navigate to="/" />;
 
@@ -45,6 +46,28 @@ const publicRoutes: CustomRoute[] = [
 
 const App = () => {
   const { user } = useAuth();
+
+  const handleOnIdle = () => {
+    console.log('user is idle', event)
+    console.log('last active', getLastActiveTime())
+  }
+
+  const handleOnActive = event => {
+    console.log('user is active', event)
+    console.log('time remaining', getRemainingTime())
+  }
+
+  const handleOnAction = event => {
+    console.log('user did something', event)
+  }
+
+  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+    timeout: 1000 * 60 * 15,
+    onIdle: handleOnIdle,
+    onActive: handleOnActive,
+    onAction: handleOnAction,
+    debounce: 500
+  })
 
   return (
     <BrowserRouter>
