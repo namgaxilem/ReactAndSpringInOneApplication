@@ -3,7 +3,7 @@ import DeployFlow from "pages/DeployFlow/DeployFlow";
 import Initializer from "pages/Initializer/Initializer";
 import Login from "pages/Login/Login";
 import RouteWithSidenav from "pages/RouteWithSidenav/RouteWithSidenav";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -13,7 +13,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import "./App.less";
-import { useIdleTimer } from 'react-idle-timer'
+import { useIdleTimer } from "react-idle-timer";
+import { getUserInfo } from "services/userInfo";
+import { Button, Modal } from "antd";
 
 const NotFoundRedirect = () => <Navigate to="/" />;
 
@@ -44,33 +46,98 @@ const publicRoutes: CustomRoute[] = [
   { path: "/login", exact: true, element: <Login /> },
 ];
 
+const IdlePopup = ({ isModalVisible, handleStayClick }) => {
+  const [timeoutSecond, setTimeoutSecond] = useState(60);
+
+  useEffect(() => {
+    const timerId = setInterval(
+      () => setTimeoutSecond(timeoutSecond - 1),
+      1000
+    );
+
+    if (timeoutSecond === 0) {
+      clearInterval(timerId);
+      window.location.href = '/logout'
+    }
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [timeoutSecond]);
+
+  useEffect(() => {
+    console.log(":isModalVisible")
+    setTimeoutSecond(60)
+  }, [isModalVisible])
+
+  return (
+    <>
+      {isModalVisible && (
+        <Modal
+          title="You have been idle!"
+          visible={isModalVisible}
+          footer={
+            <Button type="primary" onClick={handleStayClick}>
+              Stay
+            </Button>
+          }
+        >
+          <p>You will be logout in ... {timeoutSecond}</p>
+        </Modal>
+      )}
+    </>
+  );
+};
+
 const App = () => {
   const { user } = useAuth();
+  const [isIdleModalVisible, setIsIdleModalVisible] = useState(false);
+
+  const handleStayClick = () => {
+    setIsIdleModalVisible(false);
+  };
 
   const handleOnIdle = () => {
-    console.log('user is idle', event)
-    console.log('last active', getLastActiveTime())
-  }
+    console.log("user is idle, last active is: " + getLastActiveTime());
+    // if (window.location.pathname === "/login") return;
+    setIsIdleModalVisible(true);
+  };
 
-  const handleOnActive = event => {
-    console.log('user is active', event)
-    console.log('time remaining', getRemainingTime())
-  }
+  const handleOnActive = () => {
+    console.log("user is active, time remaining: " + getRemainingTime());
+  };
 
-  const handleOnAction = event => {
-    console.log('user did something', event)
-  }
+  const handleOnAction = (event) => {
+    console.log("user did something. " + event);
+  };
 
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 1000 * 60 * 15,
+    timeout: 1000 * 3,
     onIdle: handleOnIdle,
     onActive: handleOnActive,
     onAction: handleOnAction,
-    debounce: 500
-  })
+    debounce: 500,
+    events: [
+      "click",
+      "focus",
+      "focusin",
+      "focusout",
+      "input",
+      "keydown",
+      "keypress",
+      "keyup",
+      "mousedown",
+      "mousewheel",
+      "scroll",
+    ],
+  });
 
   return (
     <BrowserRouter>
+      <IdlePopup
+        isModalVisible={isIdleModalVisible}
+        handleStayClick={handleStayClick}
+      />
       <Routes>
         {[
           ...(user ? privateRoutes : publicRoutes),

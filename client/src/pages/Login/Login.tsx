@@ -51,8 +51,6 @@ const Login = () => {
           <Text style={{ width: "100%" }}>Login with AAD</Text>
         </Button>
       </Card>
-
-      <button onClick={() => { postDeployment(null) }}> testtest</button>
     </Layout>
   );
 };
