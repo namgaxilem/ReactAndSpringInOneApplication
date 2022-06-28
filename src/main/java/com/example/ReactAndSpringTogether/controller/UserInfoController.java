@@ -1,4 +1,4 @@
-package com.example.ReactAndSpringTogether.api.security;
+package com.example.ReactAndSpringTogether.controller;
 
 import com.example.ReactAndSpringTogether.security.UserInfo;
 import com.example.ReactAndSpringTogether.security.UserInfoService;

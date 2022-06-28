@@ -1,4 +1,4 @@
-package com.example.ReactAndSpringTogether.api.security;
+package com.example.ReactAndSpringTogether.controller;
 
 import com.nimbusds.jose.util.JSONStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
