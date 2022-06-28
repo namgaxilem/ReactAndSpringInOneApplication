@@ -1,13 +1,22 @@
 import {
-  DesktopOutlined, PieChartOutlined,
-  TeamOutlined
+  DesktopOutlined,
+  PieChartOutlined,
+  QuestionCircleOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
+import MenuItem from "antd/lib/menu/MenuItem";
 import { LOGOUT_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
 import Deployment from "pages/Deployment/Deployment";
 import { useEffect, useState } from "react";
-import { NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Catalog from "../Catalog/Catalog";
 import Dashboard from "../Dashboard/Dashboard";
 import Environments from "../Environments/Environments";
@@ -29,9 +38,9 @@ const RouteWithSidenav = () => {
 
   useEffect(() => {
     if (location.pathname === "/login") {
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
-  }, [location])
+  }, [location]);
 
   const menu = (
     <Menu onClick={handleMenuClick}>
@@ -45,7 +54,7 @@ const RouteWithSidenav = () => {
     <Layout style={{ minHeight: "100vh", overflow: "hidden" }}>
       <Sider
         theme={"dark"}
-        collapsible
+        // collapsible
         collapsed={collapsed}
         onCollapse={() => setCollapsed(!collapsed)}
       >
@@ -72,6 +81,30 @@ const RouteWithSidenav = () => {
               <div>Deployments</div>
             </NavLink>
           </Menu.Item>
+
+          <Menu
+            theme="dark"
+            mode="vertical"
+            style={{ position: "absolute", bottom: 48, width: "100%" }}
+          >
+            <Menu.Item key="5" icon={<QuestionCircleOutlined />}>
+              <NavLink to="/help">
+                <div>Help</div>
+              </NavLink>
+            </Menu.Item>
+            <Menu.SubMenu
+              icon={
+                <Avatar
+                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                >
+                  {user?.name?.charAt(0)}
+                </Avatar>
+              }
+              title="User"
+            >
+              <Menu.Item onClick={() => setCollapsed(!collapsed)}>Logout</Menu.Item>
+            </Menu.SubMenu>
+          </Menu>
         </Menu>
       </Sider>
       <Layout className="site-layout">

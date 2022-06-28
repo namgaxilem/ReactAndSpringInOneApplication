@@ -1,5 +1,6 @@
 package com.example.ReactAndSpringTogether.api.security;
 
+import com.example.ReactAndSpringTogether.exception.CustomBadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class CatalogController {
                     .uri("http://localhost:8181/v1/flows" + "?page=1&pageSize=1")
                     .attributes(oauth2AuthorizedClient(catalogService))
                     .retrieve()
+                    .onStatus(
+                            HttpStatus.INTERNAL_SERVER_ERROR::equals,
+                            response -> response.bodyToMono(String.class).map(cc -> new CustomBadRequestException("asd")))
                     .bodyToMono(String.class)
                     .block();
             return "/api/flows - " + (null != body ? body : "null");

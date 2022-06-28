@@ -99,7 +99,7 @@ const App = () => {
 
   const handleOnIdle = () => {
     console.log("user is idle, last active is: " + getLastActiveTime());
-    // if (window.location.pathname === "/login") return;
+    if (window.location.pathname === "/login") return;
     setIsIdleModalVisible(true);
   };
 
@@ -112,7 +112,7 @@ const App = () => {
   };
 
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 1000 * 3,
+    timeout: 1000 * 60 * 10,
     onIdle: handleOnIdle,
     onActive: handleOnActive,
     onAction: handleOnAction,
@@ -134,10 +134,10 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <IdlePopup
+      {isIdleModalVisible && <IdlePopup
         isModalVisible={isIdleModalVisible}
         handleStayClick={handleStayClick}
-      />
+      />}
       <Routes>
         {[
           ...(user ? privateRoutes : publicRoutes),
