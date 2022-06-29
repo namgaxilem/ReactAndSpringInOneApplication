@@ -68,13 +68,12 @@ public class AzureADMultiSecurityConfig extends AadWebSecurityConfigurerAdapter 
     public void configure(HttpSecurity http) throws Exception {
         // use required configuration from AADWebSecurityAdapter.configure:
         super.configure(http);
-        // add custom configuration:
         http.authorizeRequests()
-                .antMatchers("/api/**").authenticated()     // limit these pages to authenticated users (default: /token_details)
-                .anyRequest().permitAll()                  // allow all other routes.
-        ;
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll();
         http
                 .csrf()
-                .disable();
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        http.cors();
     }
 }

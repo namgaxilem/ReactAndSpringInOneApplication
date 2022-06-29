@@ -1,6 +1,7 @@
 package com.example.ReactAndSpringTogether.controller;
 
 import com.example.ReactAndSpringTogether.service.RequestMethodMapping;
+import com.example.ReactAndSpringTogether.utils.UriBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -26,7 +27,13 @@ public class CatalogController extends BaseController {
             HttpServletRequest request,
             @RequestBody(required = false) Object body
     ) {
-        String uri = "http://localhost:8181/v1/flows?page=1&pageSize=1";
+        log.trace("A TRACE Message");
+        log.debug("A DEBUG Message");
+        log.info("An INFO Message");
+        log.warn("A WARN Message");
+        log.error("An ERROR Message");
+
+        String uri = "http://localhost:8181/v1/flows/" + UriBuilder.build(request);
         return requestMethodMapping.checkMethodAndCallService(request, client, uri, body);
     }
 }
