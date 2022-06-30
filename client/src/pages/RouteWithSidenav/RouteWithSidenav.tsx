@@ -1,5 +1,6 @@
 import {
   DesktopOutlined,
+  DoubleLeftOutlined,
   PieChartOutlined,
   QuestionCircleOutlined,
   TeamOutlined,
@@ -47,6 +48,9 @@ const RouteWithSidenav = () => {
       <Menu.Item key="1">
         <Typography.Text>Logout</Typography.Text>
       </Menu.Item>
+      <Menu.Item key="2">
+        <Typography.Text>User Info</Typography.Text>
+      </Menu.Item>
     </Menu>
   );
 
@@ -84,7 +88,7 @@ const RouteWithSidenav = () => {
 
           <Menu
             theme="dark"
-            mode="vertical"
+            mode="inline"
             style={{ position: "absolute", bottom: 48, width: "100%" }}
           >
             <Menu.Item key="5" icon={<QuestionCircleOutlined />}>
@@ -105,8 +109,17 @@ const RouteWithSidenav = () => {
               <Menu.Item onClick={() => setCollapsed(!collapsed)}>Logout</Menu.Item>
             </Menu.SubMenu>
           </Menu>
+
+          <div
+            className={styles.collapseButton}
+          >
+            <span>Build number asd</span>
+            <DoubleLeftOutlined />
+          </div>
+
         </Menu>
       </Sider>
+
       <Layout className="site-layout">
         <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
           <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
