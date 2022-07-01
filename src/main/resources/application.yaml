@@ -23,22 +23,21 @@ spring:
             scopes:
               - api://05b23345-b17a-4c50-99a1-959287ce863b/Obo.Deployment.NifiScope
 
-#azure:
-#  activedirectory:
-#    application-type: web_application_and_resource_server
-#    # Specifies your Active Directory ID:
-#    tenant-id: d400665f-0274-46fe-899b-38ed0885144a
-#    # Specifies your App Registration's Application ID:
-#    client-id: dc8f3d14-355c-4223-80cb-23e938c26027
-#    # Specifies your App Registration's secret key:
-#    client-secret: r1~8Q~337Lpk.Zl5HyebzmTTYIgU1Mja18XOUdcu
-#    # Specifies the post-log-out-redirect-uri, where to return your app after logout.
-#    post-logout-redirect-uri: http://localhost:8080
-#    # Specifies the Microsoft Graph scopes that your app needs access to - not required in this app.
-#    authorization-clients:
-#      dhp-eventproc-catalog:
-#        authorization-grant-type: ON_BEHALF_OF
-#        scopes: api://9911dd89-b9c5-4de4-b3bb-265d5c214e91/Obo.Catalog
+info:
+  app:
+    version: 1.0.0
+    ANDROID_HOME: ${ANDROID_HOME}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  info:
+    env:
+      enabled: true
 
 webclient:
   config:
