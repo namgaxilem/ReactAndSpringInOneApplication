@@ -6,7 +6,8 @@ interface User {
     accessToken?: string | null,
     homeAccountId?: string | null
     expiresOn?: number | null,
-    idToken?: string | null
+    idToken?: string | null,
+    roles?: string[]
 }
 
 export default User

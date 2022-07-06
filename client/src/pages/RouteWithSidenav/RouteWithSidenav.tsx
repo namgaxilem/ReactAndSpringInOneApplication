@@ -123,12 +123,15 @@ const RouteWithSidenav = () => {
       <Layout className="site-layout">
         <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
           <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
-            <Space className={styles.avatar}>
-              <Typography.Text>{user && user.name}</Typography.Text>
-              <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+            <div className={styles.avatar}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1em' }}>
+                <Space className="mock-block" style={{ height: '50%', lineHeight: '100%', justifyContent: 'end' }}><Typography.Text strong>{user && user.name}</Typography.Text></Space>
+                <Space className="mock-block" style={{ height: '50%', lineHeight: '100%', justifyContent: 'end' }}><Typography.Text type="secondary"> Admin</Typography.Text></Space>
+              </div>
+              <Avatar size={'large'} style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
                 {user?.name?.charAt(0)}
               </Avatar>
-            </Space>
+            </div>
           </Dropdown>
         </Header>
         <Content className={styles.siteLayoutContent}>
