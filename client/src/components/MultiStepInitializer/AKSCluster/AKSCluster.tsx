@@ -1,14 +1,27 @@
-import { Col, Divider, InputNumber, Row } from "antd";
-import React from "react";
+import { Col, Divider, InputNumber, Radio, Row } from "antd";
+import React, { useState } from "react";
 import Fieldset from "components/Fieldset/Fieldset";
 import { Form, Input, Button, Checkbox } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { Rule } from "antd/lib/form";
+
+const ruleRequiredOnly: Rule[] = [
+  { required: true, message: "this is requried" }
+];
+
+const ruleRequiredWithCustom: Rule[] = [
+  { required: true, message: "this is requrie" },
+  { type: 'number', min: 1, message: "min is 1" },
+  { type: 'number', max: 100, message: "max is 100" }
+];
 
 const AKSCluster = ({ setAKSClusterModel }: any) => {
   const [form] = useForm();
   const returnModel = () => {
     setAKSClusterModel("agugu");
   };
+
+  const [enabled, setEnabled] = useState(false);
 
   return (
     <>
@@ -23,6 +36,13 @@ const AKSCluster = ({ setAKSClusterModel }: any) => {
           onFinishFailed={() => console.log(form.getFieldValue("GreaterThan0"))}
           form={form}
         >
+          <Form.Item label="Radio">
+            <Radio.Group onChange={() => setEnabled(!enabled)} value={enabled}>
+              <Radio value={true}> Enabled </Radio>
+              <Radio value={false}> Dsiabled </Radio>
+            </Radio.Group>
+          </Form.Item>
+
           <Row>
             <Col span={6}>
               <Form.Item label="phone"></Form.Item>
@@ -30,11 +50,9 @@ const AKSCluster = ({ setAKSClusterModel }: any) => {
             <Col span={18}>
               <Form.Item
                 name="phone"
-                rules={[
-                  { required: true, message: "Please input your phone number!" },
-                  { type: 'number', min: 1, message: "min is 1" },
-                  { type: 'number', max: 100, message: "max is 100" }
-                ]}
+                rules={
+                  enabled ? ruleRequiredWithCustom : ruleRequiredOnly
+                }
               >
                 <InputNumber
                   formatter={value => `${value}%`}
@@ -82,9 +100,23 @@ const AKSCluster = ({ setAKSClusterModel }: any) => {
 
           <Row>
             <Col span={6}>
-              <Form.Item label="Certificate"></Form.Item>
+              <Form.Item label="Name regex"></Form.Item>
+            </Col>
+            <Col span={18}>
+              <Form.Item
+                name="name"
+                rules={[
+                  { required: true, message: "Cannot null" },
+                  { pattern: new RegExp("^[_a-zA-Z]+[a-zA-Z0-9_-]+[a-zA-Z0-9_]$"), message: "Must contain bla bla bla...." }
+                ]}
+              >
+
+                <Input />
+              </Form.Item>
             </Col>
           </Row>
+
+          {'^([a-z]|-|\d)([a-z]|-|\d)([a-z]|-|\d)+$' + '/(.*[a-z]){3}/i' + '^[^_-][a-zA-Z0-9_-]*[^_-]$'}
 
           <Form.Item
             name="remember"
@@ -95,7 +127,7 @@ const AKSCluster = ({ setAKSClusterModel }: any) => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
+            <Button>
               Submit
             </Button>
           </Form.Item>
