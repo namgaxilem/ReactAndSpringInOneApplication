@@ -5,13 +5,14 @@ import {
   QuestionCircleOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
+import { Avatar, Breadcrumb, Dropdown, Layout, Menu, Space, Typography } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import { LOGOUT_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
 import Deployment from "pages/Deployment/Deployment";
 import { useEffect, useState } from "react";
 import {
+  Link,
   NavLink,
   Route,
   Routes,
@@ -30,6 +31,7 @@ const RouteWithSidenav = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const pathSnippets = location.pathname.split('/').filter(i => i);
 
   const handleMenuClick = (e) => {
     if (e.key === "1") {
@@ -53,6 +55,28 @@ const RouteWithSidenav = () => {
       </Menu.Item>
     </Menu>
   );
+
+  const breadcrumbNameMap: Record<string, string> = {
+    '/dashboard': 'Dashboard',
+    '/catalog': 'Catalog',
+    '/environments': 'Environments',
+    '/deployments': 'Deployments',
+  };
+
+  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    return (
+      <Breadcrumb.Item key={url}>
+        <Link to={url}>{breadcrumbNameMap[url]}</Link>
+      </Breadcrumb.Item>
+    );
+  });
+
+  const breadcrumbItems = [
+    <Breadcrumb.Item key="home">
+      <Link to="/">Home</Link>
+    </Breadcrumb.Item>,
+  ].concat(extraBreadcrumbItems);
 
   return (
     <Layout style={{ minHeight: "100vh", overflow: "hidden" }}>
@@ -122,6 +146,10 @@ const RouteWithSidenav = () => {
 
       <Layout className="site-layout">
         <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
+          <Breadcrumb className={styles.breadcumb}>
+            {breadcrumbItems}
+          </Breadcrumb>
+
           <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
             <div className={styles.avatar}>
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1em' }}>
