@@ -5,35 +5,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.security.Principal;
 
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
-
 @RestController
 public class DeploymentController {
-
-    @Autowired
     private WebClient webClient;
 
     @Autowired
-    private OAuth2AuthorizedClientManager auth2AuthorizedClientManager;
+    public DeploymentController(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     @PostMapping("/api/deployment")
+//    @PreAuthorize("hasAuthority('APPROLE_portalUser')")
     public ResponseEntity<String> createDeployment(
             @RegisteredOAuth2AuthorizedClient("dhp-eventproc-deployment") OAuth2AuthorizedClient deploymentService,
             @RequestBody Object body,
             Principal principal
             ) {
         System.out.println(principal);
-//        return new ResponseEntity<>("ok" + body, HttpStatus.OK);
         return new ResponseEntity<>(callDeploymentService(deploymentService, body), HttpStatus.OK);
     }
 
@@ -45,7 +42,7 @@ public class DeploymentController {
                     .accept(MediaType.ALL)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(JSONStringUtils.toJSONString(reqBody.toString())))
-                    .attributes(oauth2AuthorizedClient(deploymentService))
+                    .header("Authorization", "Bearer " + deploymentService.getAccessToken().getTokenValue())
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();

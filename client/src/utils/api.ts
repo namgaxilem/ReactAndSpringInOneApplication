@@ -1,6 +1,6 @@
 import axios, { Axios } from 'axios'
 import { config } from 'config/config'
-import User from 'types/User'
+import { LOGIN_ENDPOINT } from 'config/constants'
 
 class RestClient {
   private client: Axios
@@ -69,6 +69,10 @@ class RestClient {
       error = res.request
     else
       error = res.message
+    if (res.response.status === 401) {
+      console.log("unauthorize")
+      window.location.href = window.location.href = LOGIN_ENDPOINT
+    }
     return Promise.reject(error)
   }
 }

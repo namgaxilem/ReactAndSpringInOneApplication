@@ -5,7 +5,15 @@ import {
   QuestionCircleOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Dropdown, Layout, Menu, Space, Typography } from "antd";
+import {
+  Avatar,
+  Breadcrumb,
+  Dropdown,
+  Layout,
+  Menu,
+  Space,
+  Typography,
+} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import { LOGOUT_ENDPOINT } from "config/constants";
 import { useAuth } from "context/auth";
@@ -19,6 +27,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import { getUserFirstAndLastNameCharacter } from "utils/common";
 import Catalog from "../Catalog/Catalog";
 import Dashboard from "../Dashboard/Dashboard";
 import Environments from "../Environments/Environments";
@@ -31,7 +40,7 @@ const RouteWithSidenav = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const pathSnippets = location.pathname.split('/').filter(i => i);
+  const pathSnippets = location.pathname.split("/").filter((i) => i);
 
   const handleMenuClick = (e) => {
     if (e.key === "1") {
@@ -57,14 +66,14 @@ const RouteWithSidenav = () => {
   );
 
   const breadcrumbNameMap: Record<string, string> = {
-    '/dashboard': 'Dashboard',
-    '/catalog': 'Catalog',
-    '/environments': 'Environments',
-    '/deployments': 'Deployments',
+    "/dashboard": "Dashboard",
+    "/catalog": "Catalog",
+    "/environments": "Environments",
+    "/deployments": "Deployments",
   };
 
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
       <Breadcrumb.Item key={url}>
         <Link to={url}>{breadcrumbNameMap[url]}</Link>
@@ -109,39 +118,37 @@ const RouteWithSidenav = () => {
               <div>Deployments</div>
             </NavLink>
           </Menu.Item>
-
-          <Menu
-            theme="dark"
-            mode="inline"
-            style={{ position: "absolute", bottom: 48, width: "100%" }}
-          >
-            <Menu.Item key="5" icon={<QuestionCircleOutlined />}>
-              <NavLink to="/help">
-                <div>Help</div>
-              </NavLink>
-            </Menu.Item>
-            <Menu.SubMenu
-              icon={
-                <Avatar
-                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-                >
-                  {user?.name?.charAt(0)}
-                </Avatar>
-              }
-              title="User"
-            >
-              <Menu.Item onClick={() => setCollapsed(!collapsed)}>Logout</Menu.Item>
-            </Menu.SubMenu>
-          </Menu>
-
-          <div
-            className={styles.collapseButton}
-          >
-            <span>Build number asd</span>
-            <DoubleLeftOutlined />
-          </div>
-
         </Menu>
+
+        <Menu
+          theme="dark"
+          mode="inline"
+          style={{ position: "absolute", bottom: 48, width: "100%" }}
+        >
+          <Menu.Item key="5" icon={<QuestionCircleOutlined />} onClick={() => console.log("testtest")}>
+            <NavLink to="/help">
+              <div>Help</div>
+            </NavLink>
+          </Menu.Item>
+          <Menu.SubMenu
+            icon={
+              <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+                {getUserFirstAndLastNameCharacter(user?.name || "")}
+              </Avatar>
+            }
+            title="User"
+          >
+            <Menu.Item onClick={() => setCollapsed(!collapsed)}>
+              Logout
+            </Menu.Item>
+          </Menu.SubMenu>
+        </Menu>
+
+        <div className={styles.collapseButton}>
+          <span>Build number asd</span>
+          <DoubleLeftOutlined />
+        </div>
+        
       </Sider>
 
       <Layout className="site-layout">
@@ -152,12 +159,40 @@ const RouteWithSidenav = () => {
 
           <Dropdown overlay={menu} placement="bottom" trigger={["click"]}>
             <div className={styles.avatar}>
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1em' }}>
-                <Space className="mock-block" style={{ height: '50%', lineHeight: '100%', justifyContent: 'end' }}><Typography.Text strong>{user && user.name}</Typography.Text></Space>
-                <Space className="mock-block" style={{ height: '50%', lineHeight: '100%', justifyContent: 'end' }}><Typography.Text type="secondary"> Admin</Typography.Text></Space>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  padding: "1em",
+                }}
+              >
+                <Space
+                  className="mock-block"
+                  style={{
+                    height: "50%",
+                    lineHeight: "100%",
+                    justifyContent: "end",
+                  }}
+                >
+                  <Typography.Text strong>{user && user.name}</Typography.Text>
+                </Space>
+                <Space
+                  className="mock-block"
+                  style={{
+                    height: "50%",
+                    lineHeight: "100%",
+                    justifyContent: "end",
+                  }}
+                >
+                  <Typography.Text type="secondary"> Admin</Typography.Text>
+                </Space>
               </div>
-              <Avatar size={'large'} style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
-                {user?.name?.charAt(0)}
+              <Avatar
+                size={"large"}
+                style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              >
+                {getUserFirstAndLastNameCharacter(user?.name || "")}
               </Avatar>
             </div>
           </Dropdown>

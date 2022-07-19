@@ -6,9 +6,11 @@ import com.azure.spring.cloud.autoconfigure.aad.AadWebSecurityConfigurerAdapter;
 //import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -75,5 +77,9 @@ public class AzureADMultiSecurityConfig extends AadWebSecurityConfigurerAdapter 
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http.cors();
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"));
     }
 }

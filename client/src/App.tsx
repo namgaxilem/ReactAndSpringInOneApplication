@@ -109,9 +109,6 @@ const App = () => {
 
   const handleOnAction = (event) => {
     console.log("user did something. " + event);
-    let test = "asldkj9;base64,NGUYENDUCNAM"
-    test = test.substring(test.indexOf(",") + 1)
-    console.log(test)
   };
 
   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
@@ -143,7 +140,8 @@ const App = () => {
       />}
       <Routes>
         {[
-          ...(user ? privateRoutes : publicRoutes),
+          // ...(user ? privateRoutes : privateRoutes),
+          ...privateRoutes,
           { component: NotFoundRedirect },
         ].map((route, index) => (
           <Route key={index} {...route} />
